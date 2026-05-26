@@ -1,0 +1,72 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Widget Integration" description="Embed the NeNe Corpus chat widget on any existing site.">
+  <h1>Widget Integration</h1>
+  <p>Embed the NeNe Corpus chat widget on any existing website with a single <code>&lt;script&gt;</code> tag.</p>
+
+  <h2>Quick embed</h2>
+  <pre><code>&lt;script
+  src="https://your-domain.com/widget.js"
+  data-corpus-url="https://your-domain.com"
+  defer
+&gt;&lt;/script&gt;</code></pre>
+  <p>Place this snippet just before the closing <code>&lt;/body&gt;</code> tag of your page.</p>
+
+  <h2>Attributes</h2>
+  <table>
+    <thead>
+      <tr><th>Attribute</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src</code></td>
+        <td>✅</td>
+        <td>Full URL to <code>widget.js</code> on your NeNe Corpus server</td>
+      </tr>
+      <tr>
+        <td><code>data-corpus-url</code></td>
+        <td>✅</td>
+        <td>Base URL of your NeNe Corpus installation</td>
+      </tr>
+      <tr>
+        <td><code>data-locale</code></td>
+        <td>—</td>
+        <td>Override display locale: <code>ja</code>, <code>en</code>, <code>de</code>, <code>fr</code>, <code>zh-Hans</code>, <code>pt-BR</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Same-origin requirement</h2>
+  <p>The widget <strong>must be loaded from the same origin</strong> as your NeNe Corpus installation. Cross-origin embedding is not supported by design (security).</p>
+  <pre><code>&lt;!-- ✅ correct: widget.js served from your own NeNe Corpus instance --&gt;
+&lt;script src="https://corpus.example.com/widget.js"
+        data-corpus-url="https://corpus.example.com" defer&gt;&lt;/script&gt;
+
+&lt;!-- ❌ wrong: widget.js from a different origin --&gt;
+&lt;script src="https://cdn.example.com/widget.js" ...&gt;&lt;/script&gt;</code></pre>
+
+  <h2>Appearance customization</h2>
+  <p>Customize colors, hero text, avatars, and layout from the Admin UI under <strong>Settings → Design</strong>. Changes take effect immediately without re-deploying.</p>
+
+  <h3>Available settings</h3>
+  <ul>
+    <li><strong>Theme</strong> — <code>light</code> / <code>dark</code> / <code>auto</code></li>
+    <li><strong>Primary color</strong> — brand hex color</li>
+    <li><strong>Hero title &amp; subtitle</strong> — welcome message shown before first message</li>
+    <li><strong>Bot avatar</strong> — upload a custom image</li>
+    <li><strong>User avatar mode</strong> — <code>initial</code> (letter) or <code>icon</code></li>
+    <li><strong>Custom CSS</strong> — inject additional styles (sanitized server-side)</li>
+    <li><strong>Widget layout</strong> — position (bottom-right / bottom-left), max width</li>
+  </ul>
+
+  <h2>Locales</h2>
+  <p>The widget ships with 6 built-in locales: <code>ja</code>, <code>en</code>, <code>de</code>, <code>fr</code>, <code>zh-Hans</code>, <code>pt-BR</code>.</p>
+  <p>Locale resolution order:</p>
+  <ol>
+    <li><code>data-locale</code> attribute on the script tag</li>
+    <li>Browser <code>Accept-Language</code> header</li>
+    <li>Fallback: <code>en</code></li>
+  </ol>
+</DocLayout>

@@ -1,0 +1,110 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Architecture" description="PHP layered architecture, module structure, and frontend overview for NeNe Corpus.">
+  <h1>Architecture</h1>
+
+  <h2>Overview</h2>
+  <pre><code>Existing site → &lt;script widget.js&gt; ─┐
+Admin UI (React) ────────────────────┼→ NeNe Corpus API (PHP 8.4) → MySQL
+                                     │         │
+                                     │         ↓ server-side only
+                                     │   Claude API (tool_use)</code></pre>
+  <p>
+    NeNe Corpus is a PHP 8.4 application built on NENE2 — an internal framework for Japanese shared-hosting compatibility.
+    It shares the same codebase for both Tier A (shared hosting) and Tier B (Docker/VPS).
+  </p>
+
+  <hr />
+
+  <h2>PHP Layer Structure</h2>
+  <pre><code>Handler → UseCase → RepositoryInterface → PdoRepository</code></pre>
+  <table>
+    <thead>
+      <tr><th>Layer</th><th>Responsibility</th><th>Restrictions</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Handler</strong></td><td>HTTP parse, DTO construction, UseCase call, JSON response</td><td>No SQL, no business logic</td></tr>
+      <tr><td><strong>UseCase</strong></td><td>Business logic, orchestration</td><td>No <code>$_SERVER</code>, no PDO</td></tr>
+      <tr><td><strong>Repository</strong></td><td>SQL / persistence only</td><td>No HTTP, no session logic</td></tr>
+      <tr><td><strong>Llm/</strong></td><td>Claude API (tool_use)</td><td>No domain invariants</td></tr>
+    </tbody>
+  </table>
+  <p>All PHP files use <code>declare(strict_types=1)</code>. Classes are <code>final readonly</code> where possible.</p>
+
+  <hr />
+
+  <h2>Module Structure (<code>src/</code>)</h2>
+  <p>Domain-first. Layer-first folders (<code>src/Handlers/</code>, <code>src/Repositories/</code>) are <strong>not used</strong>.</p>
+  <pre><code>src/
+  AdminAuth/      # JWT auth, admin user management
+  Ingestion/      # PDF / CSV / text ingestion pipeline
+  Source/         # Source file metadata
+  Document/       # Logical document CRUD
+  Chunk/          # Text segments for search and citations
+  Chat/           # Sync JSON chat (SendChatMessageUseCase)
+  Session/        # Chat session management
+  Search/         # Full-text search (LIKE + scoring)
+  Llm/            # Claude API orchestration (tool_use, max 3 rounds)
+  RateLimit/      # Rate limiting (session / IP)
+  Appearance/     # Widget appearance settings
+  Settings/       # LLM settings (API key management)
+  ChatLimits/     # Usage limits (per-IP / global)
+  Notification/   # Email notifications (daily report, limit alerts)
+  Mail/           # SMTP mailer (PHPMailer wrapper)
+  Install/        # Web installer (Tier A)
+  Config/         # .env update utilities</code></pre>
+
+  <hr />
+
+  <h2>Database Schema</h2>
+  <table>
+    <thead><tr><th>Table</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>sources</code></td><td>Uploaded source files (pdf / csv / text)</td></tr>
+      <tr><td><code>documents</code></td><td>Logical documents derived from sources</td></tr>
+      <tr><td><code>chunks</code></td><td>Searchable text segments with citation data</td></tr>
+      <tr><td><code>chat_sessions</code></td><td>Consumer chat sessions</td></tr>
+      <tr><td><code>chat_messages</code></td><td>Messages with <code>citations_json</code></td></tr>
+      <tr><td><code>rate_limit_buckets</code></td><td>IP/session rate limiting</td></tr>
+      <tr><td><code>admin_users</code></td><td>Admin accounts</td></tr>
+      <tr><td><code>admin_password_resets</code></td><td>Password reset tokens (SHA-256 hash, 1-hour TTL)</td></tr>
+      <tr><td><code>appearance_settings</code></td><td>Widget theme, hero, chat, layout JSON</td></tr>
+      <tr><td><code>corpus_chat_settings</code></td><td>LLM config (model, prompt, fallback)</td></tr>
+      <tr><td><code>chat_limits_settings</code></td><td>Usage limits (char count, intervals, daily budgets)</td></tr>
+    </tbody>
+  </table>
+  <p>Migrations: Phinx (<code>database/migrations/</code>). Schema snapshots: <code>database/schema/</code>.</p>
+
+  <hr />
+
+  <h2>Frontend (<code>frontend/</code>)</h2>
+  <p>npm workspaces monorepo:</p>
+  <pre><code>frontend/
+  apps/admin/       # Admin SPA — Tailwind CSS v4 + React
+  apps/widget/      # Embed widget — BEM + CSS variables → widget.js
+  packages/
+    api-client/     # snake_case types + fetch helpers
+    i18n/           # Message keys + catalogs (ja/en/de/fr/zh-Hans/pt-BR)
+    tokens/         # BEM class constants + CSS variable names</code></pre>
+  <table>
+    <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Widget styles</td><td>BEM + <code>var(--nc-*)</code> only. <strong>No Tailwind</strong> in widget</td></tr>
+      <tr><td>Admin styles</td><td>Tailwind utility classes in TSX</td></tr>
+      <tr><td>JSON</td><td><code>snake_case</code> throughout (no client-side renaming)</td></tr>
+      <tr><td>i18n</td><td>All UI strings in locale catalogs</td></tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h2>Sync JSON Chat</h2>
+  <p>
+    NeNe Corpus uses <strong>sync JSON chat</strong> — a single HTTP request/response.
+    SSE / token streaming is intentionally <strong>not implemented</strong> (Tier A shared hosting compatibility;
+    <code>ignore_user_abort</code> pattern is unreliable on shared hosts).
+  </p>
+  <p>Claude tool_use orchestration runs server-side with a maximum of 3 rounds per message.</p>
+</DocLayout>

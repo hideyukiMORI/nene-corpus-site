@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import DeployOptions from '../components/DeployOptions.astro';
+import OpenSourceCta from '../components/OpenSourceCta.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="NeNe Corpus — 自己ホスト型ナレッジチャット OSS"
+  description="PDF・CSV をアップロードしてコーパスを構築し、Claude AI が引用付きで顧客の質問に答えます。さくら・ヘテムル等の共用サーバーに対応。MIT ライセンスの自己ホスト型チャットボット OSS。"
+  lang="ja"
+>
+  <Header lang="ja" />
+  <main>
+    <Hero lang="ja" />
+    <Features lang="ja" />
+    <HowItWorks lang="ja" />
+    <DeployOptions lang="ja" />
+    <OpenSourceCta lang="ja" />
+  </main>
+  <Footer lang="ja" />
+</Layout>

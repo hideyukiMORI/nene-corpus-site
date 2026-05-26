@@ -1,0 +1,112 @@
+---
+import Layout from './Layout.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  section?: string;
+}
+const { title = 'Docs', description, section = '' } = Astro.props;
+
+const nav = [
+  {
+    section: 'Getting Started',
+    items: [
+      { label: 'Overview', href: '/docs/getting-started' },
+      { label: 'Tier A — Shared Hosting', href: '/docs/getting-started/tier-a' },
+      { label: 'Tier B — Docker / VPS', href: '/docs/getting-started/tier-b' },
+    ],
+  },
+  {
+    section: 'Integration',
+    items: [
+      { label: 'Widget Embed', href: '/docs/widget' },
+      { label: 'API Reference', href: '/docs/api' },
+    ],
+  },
+  {
+    section: 'Architecture',
+    items: [
+      { label: 'Overview', href: '/docs/architecture' },
+      { label: 'Database Schema', href: '/docs/architecture/schema' },
+    ],
+  },
+  {
+    section: 'Operations',
+    items: [
+      { label: 'Configuration', href: '/docs/configuration' },
+      { label: 'Email Notifications', href: '/docs/notifications' },
+    ],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<Layout title={`${title} — NeNe Corpus Docs`} description={description}>
+  <div class="flex min-h-screen flex-col">
+    <!-- Top nav -->
+    <header class="sticky top-0 z-50 border-b bg-white/95 backdrop-blur-sm"
+      style="border-color: var(--color-border);">
+      <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
+        <a href="/" class="flex items-center gap-2">
+          <span class="flex h-6 w-6 items-center justify-center rounded text-white text-xs font-bold"
+            style="background: var(--color-brand);">N</span>
+          <span class="text-sm font-semibold" style="color: var(--color-fg);">NeNe Corpus</span>
+          <span class="text-xs px-1.5 py-0.5 rounded"
+            style="background: var(--color-brand-light); color: var(--color-brand-dark);">dev</span>
+        </a>
+        <nav class="hidden sm:flex items-center gap-5 ml-4 text-sm" style="color: var(--color-fg-muted);">
+          <a href="/docs/getting-started" class="hover:text-[--color-brand] transition-colors">Docs</a>
+          <a href="/docs/api" class="hover:text-[--color-brand] transition-colors">API</a>
+          <a href="/docs/architecture" class="hover:text-[--color-brand] transition-colors">Architecture</a>
+        </nav>
+        <div class="ml-auto flex items-center gap-3">
+          <a href="https://nene-corpus.com" class="text-xs transition-colors hover:text-[--color-brand]"
+            style="color: var(--color-fg-muted);">nene-corpus.com</a>
+          <a href="https://github.com/hideyukiMORI/nene-corpus" target="_blank" rel="noopener noreferrer"
+            class="text-xs transition-colors hover:text-[--color-brand]" style="color: var(--color-fg-muted);">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body: sidebar + content -->
+    <div class="flex flex-1">
+      <!-- Sidebar -->
+      <aside class="hidden lg:block w-56 shrink-0 border-r px-4 py-6"
+        style="border-color: var(--color-border); background: var(--color-sidebar);">
+        {nav.map((group) => (
+          <div class="mb-5">
+            <p class="mb-1.5 text-xs font-semibold uppercase tracking-wider"
+              style="color: var(--color-fg-subtle);">{group.section}</p>
+            <ul class="flex flex-col gap-0.5">
+              {group.items.map((item) => {
+                const active = currentPath === item.href || currentPath.startsWith(item.href + '/');
+                return (
+                  <li>
+                    <a
+                      href={item.href}
+                      class="block rounded px-2 py-1.5 text-sm transition-colors"
+                      style={active
+                        ? 'background: var(--color-brand-light); color: var(--color-brand-dark); font-weight: 500;'
+                        : 'color: var(--color-fg-muted);'}
+                    >{item.label}</a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 min-w-0 px-6 py-8 sm:px-10 sm:py-10">
+        <article class="mx-auto max-w-3xl prose">
+          <slot />
+        </article>
+      </main>
+    </div>
+  </div>
+</Layout>

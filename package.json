@@ -1,0 +1,17 @@
+{
+  "name": "nene-corpus-site",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:com": "npm run dev -w apps/com",
+    "dev:dev": "npm run dev -w apps/dev",
+    "build": "npm run build -w apps/com && npm run build -w apps/dev",
+    "build:com": "npm run build -w apps/com",
+    "build:dev": "npm run build -w apps/dev",
+    "preview:com": "npm run preview -w apps/com",
+    "preview:dev": "npm run preview -w apps/dev"
+  }
+}

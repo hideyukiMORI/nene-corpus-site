@@ -1,0 +1,99 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="API Reference" description="REST API endpoints for NeNe Corpus.">
+  <h1>API Reference</h1>
+  <p>
+    NeNe Corpus exposes a JSON REST API. The live OpenAPI spec is served at <code>/openapi.php</code> on your installation.
+  </p>
+  <blockquote>
+    Tip: Open <code>https://your-domain.com/openapi.php</code> in a browser or import it into Postman / Insomnia for interactive exploration.
+  </blockquote>
+
+  <h2>Authentication</h2>
+  <p>Admin endpoints require a <strong>Bearer JWT</strong> obtained from <code>POST /admin/auth/login</code>.</p>
+  <pre><code>Authorization: Bearer &lt;jwt&gt;</code></pre>
+  <p>Consumer endpoints (chat) are public but rate-limited per IP and session.</p>
+
+  <hr />
+
+  <h2>Admin Auth</h2>
+
+  <h3><code>POST /admin/auth/login</code></h3>
+  <p>Authenticate and receive a JWT.</p>
+  <pre><code>// Request
+&#123; "email": "admin@example.com", "password": "yourpassword" &#125;
+
+// Response 200
+&#123; "token": "eyJ..." &#125;</code></pre>
+
+  <h3><code>GET /admin/auth/me</code></h3>
+  <p>Returns the currently authenticated admin user.</p>
+
+  <h3><code>PUT /admin/auth/password</code></h3>
+  <p>Change admin password (requires current password + new password).</p>
+
+  <h3><code>PUT /admin/auth/email</code></h3>
+  <p>Change admin email address.</p>
+
+  <h3><code>POST /admin/auth/password-reset/request</code></h3>
+  <p>Request a password reset email. Always returns 200 regardless of whether the email exists (enumeration prevention).</p>
+  <pre><code>&#123; "email": "admin@example.com" &#125;</code></pre>
+
+  <h3><code>POST /admin/auth/password-reset/confirm</code></h3>
+  <p>Confirm a password reset using the token from the email.</p>
+  <pre><code>&#123; "token": "raw-token-from-email", "password": "newpassword" &#125;</code></pre>
+
+  <hr />
+
+  <h2>Sources</h2>
+
+  <h3><code>GET /admin/sources</code></h3>
+  <p>List all uploaded sources.</p>
+
+  <h3><code>POST /admin/sources</code></h3>
+  <p>Upload a new source (PDF, CSV, or plain text).</p>
+  <pre><code>Content-Type: multipart/form-data
+file: &lt;binary&gt;       # for PDF / CSV
+source_type: pdf | csv | text
+text_content: ...    # for source_type=text</code></pre>
+
+  <h3><code>DELETE /admin/sources/&#123;id&#125;</code></h3>
+  <p>Delete a source and all associated documents and chunks.</p>
+
+  <hr />
+
+  <h2>Chat (Consumer)</h2>
+
+  <h3><code>POST /chat/sessions</code></h3>
+  <p>Create a new chat session.</p>
+
+  <h3><code>POST /chat/sessions/&#123;sessionId&#125;/messages</code></h3>
+  <p>Send a message and receive a sync JSON response with citations.</p>
+  <pre><code>// Request
+&#123; "message": "Your question here" &#125;
+
+// Response 200
+&#123;
+  "message": "The answer based on your corpus...",
+  "citations": [
+    &#123; "document_id": 42, "title": "Product FAQ", "excerpt": "..." &#125;
+  ]
+&#125;</code></pre>
+  <blockquote>
+    NeNe Corpus uses <strong>sync JSON chat</strong> only. SSE / token streaming is intentionally not implemented for Tier A shared hosting compatibility.
+  </blockquote>
+
+  <hr />
+
+  <h2>Error format</h2>
+  <p>All errors follow <a href="https://www.rfc-editor.org/rfc/rfc9457" target="_blank" rel="noopener noreferrer">RFC 9457 Problem Details</a>:</p>
+  <pre><code>&#123;
+  "type": "not_found",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Document with ID 99 not found.",
+  "instance": "/admin/documents/99"
+&#125;</code></pre>
+</DocLayout>

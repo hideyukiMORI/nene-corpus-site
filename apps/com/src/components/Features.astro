@@ -1,0 +1,109 @@
+---
+export interface Props {
+  lang?: 'ja' | 'en';
+}
+const { lang = 'ja' } = Astro.props;
+
+const t = {
+  ja: {
+    heading: '必要な機能が、すべてそろっている',
+    subheading: 'エンジニアでなくても使いこなせる管理 UI から、プロダクション品質のセキュリティまで。',
+    features: [
+      {
+        icon: '📄',
+        title: 'PDF・CSV 取り込み',
+        body: 'ドラッグ&ドロップでファイルをアップロード。テキストを自動分割してコーパスを構築します。テキスト直接入力にも対応。',
+      },
+      {
+        icon: '💬',
+        title: '引用付き AI 回答',
+        body: 'Claude AI が関連チャンクを検索し、出典を明示した回答を生成。回答がどのドキュメントに基づいているかが一目でわかります。',
+      },
+      {
+        icon: '🔌',
+        title: '1行埋め込みウィジェット',
+        body: '<script> タグ 1 行を既存サイトに貼り付けるだけ。デザイン・カラー・アバターなども Admin UI からカスタマイズ可能。',
+      },
+      {
+        icon: '🖥️',
+        title: 'ブラウザ完結の管理 UI',
+        body: 'ソース管理・インジェスト・会話ログ・利用制限・外観設定をすべてブラウザから操作。コマンドラインは不要。',
+      },
+      {
+        icon: '🏠',
+        title: '完全自己ホスト',
+        body: 'データはすべて自分のサーバーに保存。さくらインターネット・ヘテムルなどの共用ホスティングから Docker/VPS まで対応。',
+      },
+      {
+        icon: '🔒',
+        title: 'セキュリティ標準装備',
+        body: 'JWT 認証・IP レートリミット・ブルートフォース対策・SMTP メール通知・パスワードリセットを標準実装。',
+      },
+    ],
+  },
+  en: {
+    heading: 'Everything you need, out of the box',
+    subheading: 'From a no-code Admin UI to production-grade security — built for operators and developers alike.',
+    features: [
+      {
+        icon: '📄',
+        title: 'PDF · CSV · Text ingestion',
+        body: 'Drag-and-drop file upload. Automatic text chunking and search indexing. Direct text input also supported.',
+      },
+      {
+        icon: '💬',
+        title: 'AI answers with citations',
+        body: 'Claude AI searches relevant chunks and returns answers with explicit source references. Every answer is grounded.',
+      },
+      {
+        icon: '🔌',
+        title: 'One-line embed widget',
+        body: 'Drop a <script> tag onto any existing page. Customize design, colors, and avatar from the Admin UI.',
+      },
+      {
+        icon: '🖥️',
+        title: 'Browser-based Admin UI',
+        body: 'Manage sources, ingestion, conversation logs, rate limits, and appearance — entirely from the browser.',
+      },
+      {
+        icon: '🏠',
+        title: 'Fully self-hosted',
+        body: 'Data stays on your server. Runs on shared hosting (Sakura, Heteml) as well as Docker and VPS.',
+      },
+      {
+        icon: '🔒',
+        title: 'Security built-in',
+        body: 'JWT auth, IP rate limiting, brute-force protection, SMTP notifications, and password reset — included by default.',
+      },
+    ],
+  },
+}[lang];
+---
+
+<section id="features" class="py-20 sm:py-24" style="background: var(--color-bg);">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <!-- Heading -->
+    <div class="mb-14 text-center">
+      <h2 class="mb-3 text-3xl font-bold tracking-tight sm:text-4xl" style="color: var(--color-fg);">
+        {t.heading}
+      </h2>
+      <p class="mx-auto max-w-xl text-base" style="color: var(--color-fg-muted);">
+        {t.subheading}
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {t.features.map((f) => (
+        <div
+          class="rounded-2xl border p-6 transition-shadow hover:shadow-md"
+          style="border-color: var(--color-border); background: var(--color-bg);"
+        >
+          <div class="mb-4 text-3xl">{f.icon}</div>
+          <h3 class="mb-2 text-base font-semibold" style="color: var(--color-fg);">{f.title}</h3>
+          <p class="text-sm leading-relaxed" style="color: var(--color-fg-muted);">{f.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

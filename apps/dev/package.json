@@ -1,0 +1,20 @@
+{
+  "name": "@nene-corpus-site/dev",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 4322",
+    "build": "astro build",
+    "preview": "astro preview --port 4322"
+  },
+  "dependencies": {
+    "astro": "^6.3.8",
+    "@astrojs/markdown-remark": "^6.0.0",
+    "@nene-corpus-site/ui": "*"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}

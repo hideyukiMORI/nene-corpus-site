@@ -1,0 +1,64 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Getting Started" description="Install NeNe Corpus on shared hosting (Tier A) or Docker/VPS (Tier B).">
+  <h1>Getting Started</h1>
+  <p>NeNe Corpus supports two deployment modes sharing the same codebase.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Tier A</th>
+        <th>Tier B</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Target</strong></td>
+        <td>Shared hosting (Sakura, Heteml…)</td>
+        <td>Docker / VPS / cloud</td>
+      </tr>
+      <tr>
+        <td><strong>Install</strong></td>
+        <td>Web installer via browser</td>
+        <td><code>docker compose up</code></td>
+      </tr>
+      <tr>
+        <td><strong>CLI required</strong></td>
+        <td>No</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td><strong>Recommended for</strong></td>
+        <td>Non-technical operators</td>
+        <td>Developers</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Prerequisites</h2>
+  <p>Both tiers require:</p>
+  <ul>
+    <li><strong>PHP 8.2+</strong> with PDO, PDO_MySQL, mbstring, json, fileinfo extensions</li>
+    <li><strong>MySQL 8.0+</strong> (or MariaDB 10.5+)</li>
+    <li>An <strong>Anthropic API key</strong> (for Claude AI chat)</li>
+  </ul>
+
+  <h2>Choose your deployment</h2>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;">
+    <a href="/docs/getting-started/tier-a"
+      style="flex:1;min-width:200px;display:block;padding:1rem 1.25rem;border-radius:0.75rem;
+      border:1px solid var(--color-border);text-decoration:none;color:inherit;">
+      <strong>Tier A — Shared Hosting</strong><br />
+      <span style="font-size:0.875rem;color:var(--color-fg-muted);">ZIP download → FTP → Web installer</span>
+    </a>
+    <a href="/docs/getting-started/tier-b"
+      style="flex:1;min-width:200px;display:block;padding:1rem 1.25rem;border-radius:0.75rem;
+      border:1px solid var(--color-border);text-decoration:none;color:inherit;">
+      <strong>Tier B — Docker / VPS</strong><br />
+      <span style="font-size:0.875rem;color:var(--color-fg-muted);">Clone → .env → docker compose up</span>
+    </a>
+  </div>
+</DocLayout>

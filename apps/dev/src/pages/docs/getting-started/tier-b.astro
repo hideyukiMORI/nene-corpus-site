@@ -1,0 +1,82 @@
+---
+import DocLayout from '../../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Tier B — Docker / VPS" description="Run NeNe Corpus with Docker Compose on a VPS or local machine.">
+  <h1>Tier B — Docker / VPS</h1>
+  <p>Run NeNe Corpus using Docker Compose. Recommended for developers and production VPS deployments.</p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>Docker 24+ and Docker Compose v2</li>
+    <li>Git</li>
+    <li>An Anthropic API key</li>
+  </ul>
+
+  <h2>1. Clone the repository</h2>
+  <pre><code>git clone https://github.com/hideyukiMORI/nene-corpus.git
+cd nene-corpus</code></pre>
+
+  <h2>2. Configure environment</h2>
+  <pre><code>cp .env.example .env</code></pre>
+  <p>Edit <code>.env</code> with your settings:</p>
+  <pre><code># Database
+DB_HOST=db
+DB_PORT=3306
+DB_NAME=nene_corpus
+DB_USER=nene
+DB_PASS=changeme
+
+# App
+APP_URL=http://localhost:8080
+APP_DEBUG=false
+
+# Anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Admin JWT secret (generate a random string)
+LOCAL_JWT_SECRET=your-secret-here
+
+# SMTP (optional — for email notifications and password reset)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=you@example.com
+SMTP_PASS=yourpassword
+SMTP_FROM=noreply@example.com
+SMTP_FROM_NAME=NeNe Corpus</code></pre>
+
+  <h2>3. Start the stack</h2>
+  <pre><code>docker compose up --build -d</code></pre>
+  <p>This starts:</p>
+  <ul>
+    <li><code>app</code> — PHP 8.4 + Apache</li>
+    <li><code>db</code> — MySQL 8.0</li>
+    <li><code>frontend</code> (dev only) — Vite dev server</li>
+  </ul>
+
+  <h2>4. Run migrations</h2>
+  <pre><code>docker compose exec app composer migrate</code></pre>
+
+  <h2>5. Create the first admin user</h2>
+  <pre><code>docker compose exec app php artisan admin:create \
+  --email=you@example.com \
+  --password=yourpass</code></pre>
+
+  <h2>6. Open the Admin UI</h2>
+  <p>Visit <code>http://localhost:8080/admin</code> and log in.</p>
+
+  <hr />
+
+  <h2>Production deployment</h2>
+  <p>For production on a VPS:</p>
+  <ol>
+    <li>Set <code>APP_URL</code> to your real domain with HTTPS</li>
+    <li>Configure a reverse proxy (nginx, Caddy) in front of port 8080</li>
+    <li>Set <code>APP_DEBUG=false</code></li>
+    <li>Use Docker volumes for MySQL data persistence</li>
+  </ol>
+
+  <h2>Health check</h2>
+  <pre><code>curl https://your-domain.com/health
+# &#123;"status":"ok"&#125;</code></pre>
+</DocLayout>

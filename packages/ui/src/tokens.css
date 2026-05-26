@@ -1,0 +1,24 @@
+/**
+ * NeNe Corpus shared design tokens
+ * Brand: Sage Teal — knowledge, archive
+ */
+
+:root {
+  --nc-brand:       #4d8f7f;
+  --nc-brand-dark:  #3d7266;
+  --nc-brand-light: #e6f2ef;
+  --nc-brand-muted: rgb(77 143 127 / 0.1);
+
+  --nc-fg:          #171717;
+  --nc-fg-muted:    #475569;
+  --nc-fg-subtle:   #64748b;
+
+  --nc-bg:          #ffffff;
+  --nc-bg-muted:    #f8faf9;
+  --nc-border:      rgb(15 23 42 / 0.1);
+
+  --nc-radius-sm:   0.25rem;
+  --nc-radius:      0.5rem;
+  --nc-radius-lg:   0.75rem;
+  --nc-radius-xl:   1rem;
+}

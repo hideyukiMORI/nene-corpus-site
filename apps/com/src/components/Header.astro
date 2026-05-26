@@ -1,0 +1,76 @@
+---
+export interface Props {
+  lang?: 'ja' | 'en';
+}
+const { lang = 'ja' } = Astro.props;
+
+const t = {
+  ja: {
+    features: '機能',
+    howItWorks: '使い方',
+    deploy: '導入方法',
+    github: 'GitHub',
+    langSwitch: 'EN',
+    langSwitchHref: '/en/',
+    getStarted: '今すぐ始める',
+  },
+  en: {
+    features: 'Features',
+    howItWorks: 'How it works',
+    deploy: 'Deploy',
+    github: 'GitHub',
+    langSwitch: 'JA',
+    langSwitchHref: '/',
+    getStarted: 'Get Started',
+  },
+}[lang];
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 border-b bg-white/90 backdrop-blur-sm"
+  style="border-color: var(--color-border);"
+>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <!-- Logo -->
+    <a href={lang === 'ja' ? '/' : '/en/'} class="flex items-center gap-2 font-semibold text-sm">
+      <span
+        class="flex h-7 w-7 items-center justify-center rounded-md text-white text-xs font-bold"
+        style="background: var(--color-brand);"
+      >N</span>
+      <span style="color: var(--color-fg);">NeNe Corpus</span>
+    </a>
+
+    <!-- Nav -->
+    <nav class="hidden sm:flex items-center gap-6 text-sm" style="color: var(--color-fg-muted);">
+      <a href="#features" class="hover:text-[--color-brand] transition-colors">{t.features}</a>
+      <a href="#how-it-works" class="hover:text-[--color-brand] transition-colors">{t.howItWorks}</a>
+      <a href="#deploy" class="hover:text-[--color-brand] transition-colors">{t.deploy}</a>
+      <a
+        href="https://github.com/hideyukiMORI/nene-corpus"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-[--color-brand] transition-colors"
+      >{t.github}</a>
+    </nav>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-2">
+      <!-- Lang switch -->
+      <a
+        href={t.langSwitchHref}
+        class="rounded px-2 py-1 text-xs font-medium transition-colors hover:bg-[--color-brand-light]"
+        style="color: var(--color-fg-muted);"
+      >{t.langSwitch}</a>
+
+      <!-- CTA -->
+      <a
+        href="https://nene-corpus.dev"
+        class="hidden sm:inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:opacity-90"
+        style="background: var(--color-brand);"
+      >{t.getStarted}</a>
+    </div>
+  </div>
+</header>
+
+<!-- spacer -->
+<div class="h-[53px]"></div>

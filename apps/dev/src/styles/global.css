@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand */
+  --color-brand:        #4d8f7f;
+  --color-brand-dark:   #3d7266;
+  --color-brand-light:  #e6f2ef;
+  --color-brand-muted:  rgb(77 143 127 / 0.1);
+
+  /* Doc-site surface (light) */
+  --color-fg:           #1e293b;
+  --color-fg-muted:     #475569;
+  --color-fg-subtle:    #64748b;
+  --color-bg:           #ffffff;
+  --color-bg-muted:     #f8fafc;
+  --color-sidebar:      #f1f5f4;
+  --color-border:       rgb(15 23 42 / 0.08);
+  --color-code-bg:      #0d1117;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  color: var(--color-fg);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Markdown prose */
+.prose h1, .prose h2, .prose h3 { color: var(--color-fg); font-weight: 700; }
+.prose h1 { font-size: 1.875rem; margin-bottom: 1rem; }
+.prose h2 { font-size: 1.25rem; margin-top: 2.5rem; margin-bottom: 0.75rem; padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--color-border); }
+.prose h3 { font-size: 1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose p  { line-height: 1.75; margin-bottom: 1rem; color: var(--color-fg-muted); }
+.prose a  { color: var(--color-brand); text-decoration: underline; }
+.prose code:not(pre code) {
+  background: var(--color-brand-light);
+  color: var(--color-brand-dark);
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+}
+.prose pre {
+  background: var(--color-code-bg) !important;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+.prose ul { list-style: disc; padding-left: 1.5rem; color: var(--color-fg-muted); }
+.prose li { margin-bottom: 0.4rem; line-height: 1.65; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-bottom: 1.25rem; }
+.prose th { background: var(--color-bg-muted); padding: 0.5rem 0.75rem; text-align: left;
+  border: 1px solid var(--color-border); font-weight: 600; }
+.prose td { padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); color: var(--color-fg-muted); }
+.prose blockquote {
+  border-left: 3px solid var(--color-brand);
+  padding-left: 1rem;
+  color: var(--color-fg-muted);
+  font-style: italic;
+  margin: 1.25rem 0;
+}
+
+:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }

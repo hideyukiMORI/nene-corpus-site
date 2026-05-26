@@ -1,0 +1,70 @@
+---
+export interface Props {
+  lang?: 'ja' | 'en';
+}
+const { lang = 'ja' } = Astro.props;
+
+const t = {
+  ja: {
+    tagline: '自己ホスト型ナレッジチャット OSS',
+    links: [
+      { label: 'ドキュメント', href: 'https://nene-corpus.dev' },
+      { label: 'GitHub', href: 'https://github.com/hideyukiMORI/nene-corpus' },
+      { label: 'セットアップガイド', href: 'https://nene-corpus.dev/docs/getting-started/tier-a' },
+      { label: 'API リファレンス', href: 'https://nene-corpus.dev/docs/api' },
+    ],
+    copyright: `© ${new Date().getFullYear()} NeNe Corpus — MIT License.`,
+    poweredBy: '開発・維持: ',
+  },
+  en: {
+    tagline: 'Self-hosted knowledge chat OSS',
+    links: [
+      { label: 'Documentation', href: 'https://nene-corpus.dev' },
+      { label: 'GitHub', href: 'https://github.com/hideyukiMORI/nene-corpus' },
+      { label: 'Getting Started', href: 'https://nene-corpus.dev/docs/getting-started/tier-a' },
+      { label: 'API Reference', href: 'https://nene-corpus.dev/docs/api' },
+    ],
+    copyright: `© ${new Date().getFullYear()} NeNe Corpus — MIT License.`,
+    poweredBy: 'Made by ',
+  },
+}[lang];
+---
+
+<footer class="border-t py-10" style="border-color: var(--color-border);">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+      <!-- Brand -->
+      <div>
+        <div class="mb-1 flex items-center gap-2">
+          <span
+            class="flex h-6 w-6 items-center justify-center rounded text-white text-xs font-bold"
+            style="background: var(--color-brand);"
+          >N</span>
+          <span class="text-sm font-semibold" style="color: var(--color-fg);">NeNe Corpus</span>
+        </div>
+        <p class="text-xs" style="color: var(--color-fg-subtle);">{t.tagline}</p>
+      </div>
+
+      <!-- Links -->
+      <nav class="flex flex-wrap gap-x-5 gap-y-2">
+        {t.links.map((link) => (
+          <a
+            href={link.href}
+            class="text-xs transition-colors hover:text-[--color-brand]"
+            style="color: var(--color-fg-muted);"
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+            rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >{link.label}</a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs" style="color: var(--color-fg-subtle);">
+      <span>{t.copyright}</span>
+      <span>
+        {t.poweredBy}<a href="https://ayane.co.jp" target="_blank" rel="noopener noreferrer"
+          class="hover:text-[--color-brand] transition-colors">ayane.co.jp</a>
+      </span>
+    </div>
+  </div>
+</footer>

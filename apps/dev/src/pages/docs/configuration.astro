@@ -1,0 +1,56 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Configuration" description="Environment variables and settings reference for NeNe Corpus.">
+  <h1>Configuration</h1>
+  <p>NeNe Corpus is configured via a <code>.env</code> file in the project root. On Tier A, the web installer writes this file for you.</p>
+
+  <h2>Required variables</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>APP_URL</code></td><td>Full URL of your installation, e.g. <code>https://corpus.example.com</code></td></tr>
+      <tr><td><code>DB_HOST</code></td><td>MySQL host</td></tr>
+      <tr><td><code>DB_PORT</code></td><td>MySQL port (default <code>3306</code>)</td></tr>
+      <tr><td><code>DB_NAME</code></td><td>Database name</td></tr>
+      <tr><td><code>DB_USER</code></td><td>Database user</td></tr>
+      <tr><td><code>DB_PASS</code></td><td>Database password</td></tr>
+      <tr><td><code>LOCAL_JWT_SECRET</code></td><td>Random secret for JWT signing (min 32 chars)</td></tr>
+      <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Your Anthropic API key (<code>sk-ant-...</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Optional: SMTP</h2>
+  <p>Required for email notifications and password reset emails.</p>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>SMTP_HOST</code></td><td>SMTP server hostname</td></tr>
+      <tr><td><code>SMTP_PORT</code></td><td>SMTP port (587 for STARTTLS, 465 for SSL)</td></tr>
+      <tr><td><code>SMTP_USER</code></td><td>SMTP username</td></tr>
+      <tr><td><code>SMTP_PASS</code></td><td>SMTP password</td></tr>
+      <tr><td><code>SMTP_FROM</code></td><td>Sender email address</td></tr>
+      <tr><td><code>SMTP_FROM_NAME</code></td><td>Sender display name</td></tr>
+      <tr><td><code>SMTP_SECURE</code></td><td><code>tls</code> (STARTTLS) or <code>ssl</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote>Without SMTP configured, email notifications and password reset emails are silently skipped. The Admin UI shows an alert when SMTP is not set up.</blockquote>
+
+  <h2>Admin UI settings</h2>
+  <p>Many settings are managed through the Admin UI (<strong>Settings</strong> modal) and stored in the database:</p>
+  <ul>
+    <li><strong>LLM settings</strong> — model, temperature, system prompt, fallback message</li>
+    <li><strong>Chat limits</strong> — message length, rate limits, daily token budgets</li>
+    <li><strong>Appearance</strong> — widget theme, colors, hero text, avatar, custom CSS</li>
+    <li><strong>Notifications</strong> — daily report recipients, rate-limit alert thresholds</li>
+  </ul>
+
+  <h2>Security notes</h2>
+  <ul>
+    <li>Never commit <code>.env</code> to version control.</li>
+    <li><code>LOCAL_JWT_SECRET</code> should be cryptographically random: <code>openssl rand -hex 32</code></li>
+    <li><code>ANTHROPIC_API_KEY</code> is stored in <code>.env</code> only and never exposed to the browser.</li>
+    <li>On Tier A, place <code>.env</code> one level above <code>public_html/</code> if possible.</li>
+  </ul>
+</DocLayout>

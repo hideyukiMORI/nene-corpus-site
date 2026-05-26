@@ -1,0 +1,52 @@
+---
+import DocLayout from '../../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Tier A — Shared Hosting" description="Install NeNe Corpus on shared hosting (Sakura, Heteml, etc.) using the web installer.">
+  <h1>Tier A — Shared Hosting</h1>
+  <p>Install NeNe Corpus on any PHP shared hosting (Sakura Internet, Heteml, Lolipop, etc.) <strong>without any command-line tools</strong>.</p>
+
+  <h2>1. Download the release ZIP</h2>
+  <p>Download the latest release from <a href="https://github.com/hideyukiMORI/nene-corpus/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a>.</p>
+  <p>The ZIP contains all PHP dependencies pre-bundled (<code>vendor/</code>), compiled frontend assets (<code>public_html/admin/</code>), and the web installer.</p>
+
+  <h2>2. Upload via FTP</h2>
+  <p>Upload the contents of <code>nene-corpus/</code> to your server's document root (e.g., <code>public_html/</code>).</p>
+  <pre><code>public_html/
+  index.php
+  admin/
+  .env    ← created by installer</code></pre>
+  <blockquote>Tip: Keep <code>.env</code> one level above <code>public_html/</code> if your hosting allows it.</blockquote>
+
+  <h2>3. Create the database</h2>
+  <p>Create a MySQL database from your hosting control panel and note the credentials: host, database name, username, password.</p>
+
+  <h2>4. Run the web installer</h2>
+  <p>Open <code>https://your-domain.com/install</code> in your browser and fill in:</p>
+  <ul>
+    <li>Database connection details</li>
+    <li>Admin email &amp; password</li>
+    <li>Anthropic API key</li>
+    <li>App URL</li>
+  </ul>
+  <p>The installer runs migrations and creates the first admin user automatically.</p>
+
+  <h2>5. Log in</h2>
+  <p>Go to <code>https://your-domain.com/admin</code> and log in with the credentials you entered.</p>
+
+  <h2>6. Upload documents and embed the widget</h2>
+  <ol>
+    <li>In the Admin UI, upload your PDFs, CSVs, or paste plain text.</li>
+    <li>Copy the embed snippet from <strong>Settings → Design</strong> and paste it into your existing site's HTML.</li>
+  </ol>
+
+  <hr />
+
+  <h2>Troubleshooting</h2>
+
+  <h3>.htaccess not working</h3>
+  <p>Make sure <code>AllowOverride All</code> is set, or that your host allows <code>.htaccess</code> — most shared hosting does.</p>
+
+  <h3>PHP extensions</h3>
+  <p>Check that <code>pdo_mysql</code>, <code>mbstring</code>, <code>json</code>, and <code>fileinfo</code> are enabled. Most shared hosting enables these by default.</p>
+</DocLayout>
